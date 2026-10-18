@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un petit secret entre nous ❤️</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#10070b;
+  --card:#24101a;
+  --red:#e83b65;
+  --pink:#ff9bb7;
+  --text:#fff1f5;
+  --muted:#d7b7c1;
+}
+
+body{
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(ellipse at top left,#59162f,transparent 45%),
+    radial-gradient(ellipse at bottom right,#431023,transparent 45%),
+    var(--bg);
+  padding:20px 14px;
+  overflow-x:hidden;
+}
+
+.petals{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+
+.petal{
+  position:absolute;
+  top:-30px;
+  color:#ff7299;
+  animation:fall linear infinite;
+  opacity:.6;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(400deg)}
+}
+
+.container{
+  position:relative;
+  z-index:1;
+  max-width:650px;
+  margin:auto;
+}
+
+header{text-align:center;padding:25px 5px 30px}
+
+.rose{font-size:35px;margin-bottom:12px}
+
+.eyebrow{
+  color:var(--pink);
+  letter-spacing:3px;
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+h1{
+  font-family:Georgia,serif;
+  font-size:clamp(32px,7vw,49px);
+  font-weight:normal;
+  line-height:1.15;
+  margin:15px 0;
+}
+
+h1 span{color:var(--pink);font-style:italic}
+
+.intro{
+  color:var(--muted);
+  line-height:1.8;
+  font-size:15px;
+}
+
+.card{
+  background:rgba(36,16,26,.92);
+  border:1px solid #71304a;
+  border-radius:24px;
+  padding:25px 20px;
+  box-shadow:0 20px 60px #0006;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.track{
+  height:5px;
+  background:#482032;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:28px;
+}
+
+.bar{
+  height:100%;
+  width:5%;
+  background:linear-gradient(90deg,#b51f4b,#ff9bb7);
+  transition:width .3s;
+}
+
+.category{
+  color:var(--pink);
+  font-size:12px;
+  letter-spacing:1px;
+  margin-bottom:14px;
+}
+
+.question{
+  font-family:Georgia,serif;
+  font-size:25px;
+  line-height:1.4;
+  margin-bottom:10px;
+}
+
+.translation{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+  margin-bottom:23px;
+}
+
+.options{display:grid;gap:10px}
+
+.option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  width:100%;
+  color:var(--text);
+  background:#ffffff07;
+  border:1px solid #613044;
+  border-radius:13px;
+  padding:15px;
+  cursor:pointer;
+  font-size:14px;
+  transition:.2s;
+}
+
+.option:hover,.option.selected{
+  border-color:var(--pink);
+  background:#a92b4b30;
+}
+
+.dot{
+  width:17px;
+  height:17px;
+  flex-shrink:0;
+  border:1px solid #c77b91;
+  border-radius:50%;
+}
+
+.option.selected .dot{
+  background:var(--red);
+  border-color:var(--red);
+  box-shadow:inset 0 0 0 4px #35101d;
+}
+
+label{
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin:20px 0 9px;
+}
+
+textarea{
+  width:100%;
+  min-height:75px;
+  resize:vertical;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid #613044;
+  background:#13080d;
+  color:white;
+  font:inherit;
+  outline:none;
+}
+
+textarea:focus{border-color:var(--pink)}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+}
+
+button{font-family:inherit}
+
+.nav{
+  flex:1;
+  padding:14px 10px;
+  border:1px solid #71304a;
+  border-radius:12px;
+  background:#ffffff08;
+  color:white;
+  cursor:pointer;
+}
+
+.primary{
+  background:linear-gradient(135deg,#b51f4b,#e84d75);
+  border:0;
+  font-weight:bold;
+}
+
+.nav:disabled{opacity:.35;cursor:not-allowed}
+
+.hidden{display:none!important}
+
+.final-title{
+  text-align:center;
+  font:normal 30px Georgia,serif;
+  margin:10px 0 18px;
+}
+
+.summary{
+  background:#12070c;
+  border:1px solid #613044;
+  padding:15px;
+  border-radius:13px;
+  color:var(--muted);
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  max-height:300px;
+  overflow:auto;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.send{
+  width:100%;
+  padding:16px;
+  border-radius:13px;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:16px;
+}
+
+.restart{
+  display:block;
+  margin:14px auto 0;
+  color:var(--pink);
+  background:none;
+  border:0;
+  cursor:pointer;
+  padding:10px;
+}
+
+.note{
+  color:#c4a2ae;
+  text-align:center;
+  font-size:12px;
+  line-height:1.7;
+  margin-top:17px;
+}
+
+footer{
+  text-align:center;
+  color:#a98793;
+  font-size:12px;
+  padding:25px 0 10px;
+}
+
+@media(max-width:400px){
+  .card{padding:20px 15px}
+  .question{font-size:22px}
+  .nav{font-size:13px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="petals" id="petals"></div>
+
+<main class="container">
+
+<header>
+  <div class="rose">🌹 ♡ 🌹</div>
+  <div class="eyebrow">Just between us</div>
+  <h1>Un petit secret<br><span>entre nous…</span></h1>
+  <p class="intro">
+    3andi lik chi as2ila 😊<br>
+    Jawbi b ra7tek w b sara7a…<br>
+    Bghit ghir nt3arfo 3la b3diyatna kter ❤️
+  </p>
+</header>
+
+<section class="card" id="quiz">
+
+  <div class="progress-info">
+    <span id="stepLabel"></span>
+    <span id="answeredLabel">0 réponses</span>
+  </div>
+
+  <div class="track">
+    <div class="bar" id="progress"></div>
+  </div>
+
+  <div class="category" id="category"></div>
+  <h2 class="question" id="question"></h2>
+  <p class="translation" id="translation"></p>
+
+  <div class="options" id="options"></div>
+
+  <label for="customAnswer">
+    Ou écris ta propre réponse… (optionnel) 💌
+  </label>
+
+  <textarea id="customAnswer"
+    placeholder="Jawbi b tari9tek…"></textarea>
+
+  <div class="actions">
+    <button class="nav" id="prevBtn">← Retour</button>
+    <button class="nav primary" id="nextBtn">Suivante →</button>
+  </div>
+
+  <p class="note">
+    Ma kayn la bonne la mauvaise réponse.<br>
+    Jawbi ghir 3la li مرتاحة ليه 💗
+  </p>
+
+</section>
+
+<section class="card hidden" id="finish">
+
+  <div class="rose" style="text-align:center">💌</div>
+
+  <h2 class="final-title">
+    Merci pour tes réponses ❤️
+  </h2>
+
+  <p class="intro" style="margin-bottom:20px;text-align:center">
+    Daba ila bghiti, sifti liya jawabatek…
+    Ghadi nqrahom b sourire 😊
+  </p>
+
+  <div class="summary" id="summary"></div>
+
+  <button class="send primary" id="sendBtn">
+    Envoyer mes réponses sur WhatsApp 💚
+  </button>
+
+  <button class="restart" id="editBtn">
+    رجعي بدلي شي جواب
+  </button>
+
+  <p class="note">
+    WhatsApp ghadi يتحل برسالة واجدة.
+    Khassk tklik 3la Envoyer tma bach twselni.
+  </p>
+
+</section>
+
+<footer>Made with a little courage & lots of ❤️</footer>
+
+</main>
+
+<script>
+
+// =====================================
+// 1. CONFIGURATION
+// BDEL HAD NUMERO B NUMERO WHATSAPP DYALK
+// Maroc: 2126XXXXXXXX ou 2127XXXXXXXX
+// Bla +, bla espaces
+// =====================================
+
+const WHATSAPP_NUMBER = "212700202866";
+
+// =====================================
+// 2. LES 20 QUESTIONS
+// =====================================
+
+const questions = [
+{
+cat:"🌷 Pour commencer",
+q:"1. Chno kan awel impression dyalk 3lia ?",
+fr:"Quelle a été ta première impression de moi ?",
+options:[
+"Ban lik zwine / cute 😌",
+"Ban lik sérieux بزاف 😂",
+"Ban lik mystérieux 👀",
+"Ma 3reftch mazal…"
+]
+},
+{
+cat:"✨ Petit crush",
+q:"2. Wach kayn chi haja fya katjbed lik l’attention ?",
+fr:"Est-ce qu’il y a quelque chose chez moi qui attire ton attention ?",
+options:[
+"Sourire dyalk 😊",
+"Tari9a dyal hdra",
+"Personnalité dyalk",
+"Mazal kanكتاشفك"
+]
+},
+{
+cat:"💗 Connexion",
+q:"3. Katfaddli lhdra f messages wla face à face ?",
+fr:"Tu préfères parler par messages ou en face à face ?",
+options:[
+"Messages 📱",
+"Face à face 🥰",
+"Bjouj, 3la 7sab lmoment"
+]
+},
+{
+cat:"☕ Notre premier date",
+q:"4. Ila khrejna l chi date, fin t7ebbi nmchiw ?",
+fr:"Pour un premier rendez-vous, tu choisirais quoi ?",
+options:[
+"Café calme ☕",
+"Promenade f lil 🌙",
+"Dîner romantique 🕯️",
+"Chi blassa spontanée 😏"
+]
+},
+{
+cat:"🫶 Sincérité",
+q:"5. Chno aktar haja kat9albi 3liha f chi wa7ed ?",
+fr:"Quelle qualité comptes-tu le plus chez quelqu’un ?",
+options:[
+"L7نان w l’attention",
+"D7k w énergie zwina",
+"Sincérité w respect",
+"Ambition w confiance"
+]
+},
+{
+cat:"🥹 Moment mignon",
+q:"6. Chno geste sghir y9der yfer7ek nhar kamel ?",
+fr:"Quel petit geste peut illuminer ta journée ?",
+options:[
+"Message sbah lkhir ☀️",
+"Ytfekker chi détail 3lia",
+"Compliment sadi9",
+"Ysm3 lia mlli نهضر"
+]
+},
+{
+cat:"💌 Un peu romantique",
+q:"7. Kat2meni b love mn awel nadera wla kayji m3a lwa9t ?",
+fr:"Tu crois au coup de foudre ou à l’amour qui grandit ?",
+options:[
+"Coup de foudre ⚡",
+"Kayji m3a lwa9t 🌱",
+"Chwiya mn hadchi w hadchi"
+]
+},
+{
+cat:"😉 Flirt mode",
+q:"8. Ila glt lik belli kat3jbini, kifach ghadi tjawebini ?",
+fr:"Si je te disais que tu me plais, tu répondrais quoi ?",
+options:[
+"Nبتاسم w n7chem 😳",
+"Nقول lik nta tani 😉",
+"Nضحك w nبدل الموضوع 😂",
+"Nجاوبك بصراحة"
+]
+},
+{
+cat:"🌹 Attention",
+q:"9. Kat3jbk chi wa7ed ybayan l’intérêt dyalo b wodo7 ?",
+fr:"Tu aimes quand quelqu’un montre clairement son intérêt ?",
+options:[
+"Ah, lوضوح زوين ❤️",
+"Bchwiya, bla pression",
+"Khasni lwa9t bach nرتاح"
+]
+},
+{
+cat:"🫣 Question courageuse",
+q:"10. Wach 3mrk tkhayelti kifach ykon date binatna ?",
+fr:"Tu as déjà imaginé à quoi pourrait ressembler un date entre nous ?",
+options:[
+"Ah, saraha 🙈",
+"Momkin… chwiya 😏",
+"Daba wlliti katkhallini nfekker",
+"Khalih surprise 😉"
+]
+},
+{
+cat:"💋 Chemistry",
+q:"11. Chno kaykhelli l’attraction tzid 3ndek ?",
+fr:"Qu’est-ce qui fait grandir l’attirance pour quelqu’un ?",
+options:[
+"Regard w sourire 👀",
+"L’humour w ta9a",
+"L’attention w lحنان",
+"L’intelligence w confiance"
+]
+},
+{
+cat:"🌙 Ambiance romantique",
+q:"12. Khtarri l’ambiance li kat3jbk kter…",
+fr:"Choisis ton ambiance romantique préférée.",
+options:[
+"B7er f coucher de soleil 🌅",
+"Temchiya f lil 🌙",
+"Café sghir w hdra twila ☕",
+"Musique w danse bchwiya 🎶"
+]
+},
+{
+cat:"🤍 Proximité",
+q:"13. Chno kaykhellik ترتاحي m3a chi wa7ed ?",
+fr:"Qu’est-ce qui te fait te sentir en confiance avec quelqu’un ?",
+options:[
+"Y7tarem les limites dyali",
+"Ykoun واضح m3aya",
+"Ykhallini 3la tabi3ti",
+"Ybayan b l’af3al machi ghir lhdra"
+]
+},
+{
+cat:"😌 Flirt un peu plus",
+q:"14. Ila kouna f date w b9ina kanchoufo f b3diyatna… chno ghadi diri ?",
+fr:"Si nos regards se croisaient longtemps pendant un date…",
+options:[
+"Nبتاسم 😊",
+"N7chem w n7يد 3يني",
+"Nb9a kanchouf fik 😉",
+"Nقول lik: ach katشوف؟ 😂"
+]
+},
+{
+cat:"🔥 Chwiya jari2a",
+q:"15. Chno compliment mn 3ndi y9der ykhallik t7chmi ?",
+fr:"Quel compliment venant de moi te ferait rougir ?",
+options:[
+"3ndek sourire kayجنن",
+"Katbanili différente b tari9a zwina",
+"Kanرتاح mlli kanهضر m3ak",
+"Chi compliment personnalisé 😳"
+]
+},
+{
+cat:"🫶 L’honnêteté",
+q:"16. Ila 3jbk chi wa7ed, katbeyniha wla katkhبيha ?",
+fr:"Quand quelqu’un te plaît, tu le montres ou tu le caches ?",
+options:[
+"Kanbeyenha b wodo7",
+"Kanستنا nchouf wach hta howa مهتم",
+"Kan7chem f lwel",
+"3la 7sab الشخص"
+]
+},
+{
+cat:"💞 Nous deux ?",
+q:"17. F ra2yek, chno khass ykoun bach jouj y9erbo l b3diyathom ?",
+fr:"Qu’est-ce qui aide deux personnes à se rapprocher ?",
+options:[
+"Lhdra bla تكلف",
+"Lwa9t w moments zwina",
+"L’intérêt mn jouj",
+"Sra7a w thi9a"
+]
+},
+{
+cat:"🌹 Une petite invitation",
+q:"18. Ila 3radt 3lik date romantique, wach t9bli ?",
+fr:"Si je t’invitais à un rendez-vous romantique, tu accepterais ?",
+options:[
+"Ah, b kol far7a ❤️",
+"Momkin… 9نعني 😉",
+"Khassni n3ref fin ghadi نمشيو",
+"Nحتاج شوية نفكر"
+]
+},
+{
+cat:"💌 Dis-moi",
+q:"19. Chno haja bghiti t3refiha 3lia w 3mrek swltini 3liha ?",
+fr:"Qu’aimerais-tu savoir sur moi sans avoir osé demander ?",
+options:[
+"Ktebih f خانة الجواب لتحت ✍️",
+"Mazal khasni n3refek kter",
+"3ndi bzaf dyal as2ila 😅"
+]
+},
+{
+cat:"❤️ La dernière",
+q:"20. B sara7a, wach bghiti nt3arfo 3la b3diyatna kter ?",
+fr:"Honnêtement, tu aimerais qu’on apprenne à mieux se connaître ?",
+options:[
+"Ah, bghit ❤️",
+"Ah, walakin bchwiya 🌷",
+"Ma3reftch mazal",
+"Nta chno ra2yk? 😉"
+]
+}
+];
+
+// =====================================
+// 3. VARIABLES
+// =====================================
+
+const answers = questions.map(() => ({
+  choice:"",
+  custom:""
+}));
+
+let current = 0;
+
+const $ = id => document.getElementById(id);
+
+const category = $("category");
+const question = $("question");
+const translation = $("translation");
+const options = $("options");
+const custom = $("customAnswer");
+
+// =====================================
+// 4. AFFICHER LES QUESTIONS
+// =====================================
+
+function saveCurrent(){
+  answers[current].custom = custom.value.trim();
+}
+
+function render(){
+
+  const item = questions[current];
+  const answer = answers[current];
+
+  $("quiz").classList.remove("hidden");
+  $("finish").classList.add("hidden");
+
+  $("stepLabel").textContent =
+    `Question ${current + 1} / ${questions.length}`;
+
+  $("answeredLabel").textContent =
+    `${answers.filter(a => a.choice || a.custom).length} réponses`;
+
+  $("progress").style.width =
+    `${((current + 1) / questions.length) * 100}%`;
+
+  category.textContent = item.cat;
+  question.textContent = item.q;
+  translation.textContent = item.fr;
+
+  options.innerHTML = "";
+
+  item.options.forEach(opt => {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "option";
+
+    if(answer.choice === opt){
+      button.classList.add("selected");
+    }
+
+    const dot = document.createElement("span");
+    dot.className = "dot";
+
+    const label = document.createElement("span");
+    label.textContent = opt;
+
+    button.append(dot,label);
+
+    button.addEventListener("click", () => {
+      answer.choice = opt;
+      render();
+    });
+
+    options.appendChild(button);
+  });
+
+  custom.value = answer.custom;
+
+  $("prevBtn").disabled = current === 0;
+
+  $("nextBtn").textContent =
+    current === questions.length - 1
+    ? "Terminer ❤️"
+    : "Suivante →";
+}
+
+// =====================================
+// 5. NAVIGATION
+// =====================================
+
+$("prevBtn").addEventListener("click", () => {
+
+  saveCurrent();
+
+  if(current > 0){
+    current--;
+    render();
+  }
+
+});
+
+$("nextBtn").addEventListener("click", () => {
+
+  saveCurrent();
+
+  if(current < questions.length - 1){
+    current++;
+    render();
+  }else{
+    showFinish();
+  }
+
+});
+
+custom.addEventListener("input", () => {
+
+  answers[current].custom = custom.value.trim();
+
+  $("answeredLabel").textContent =
+    `${answers.filter(a => a.choice || a.custom).length} réponses`;
+
+});
+
+// =====================================
+// 6. PREPARER LES REPONSES
+// =====================================
+
+function makeMessage(){
+
+  let msg =
+    "💌 Un petit secret entre nous…\n" +
+    "Voici mes réponses ❤️\n\n";
+
+  questions.forEach((q,i) => {
+
+    const a = answers[i];
+
+    msg += `${i + 1}. ${q.q}\n`;
+    msg += `➡️ ${a.choice || "Pas de choix"}\n`;
+
+    if(a.custom){
+      msg += `✍️ Ma réponse : ${a.custom}\n`;
+    }
+
+    msg += "\n";
+  });
+
+  msg += "🌹 Merci d’avoir lu mes réponses.";
+
+  return msg;
+}
+
+// =====================================
+// 7. PAGE FINALE
+// =====================================
+
+function showFinish(){
+
+  $("quiz").classList.add("hidden");
+  $("finish").classList.remove("hidden");
+
+  $("summary").textContent = makeMessage();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+$("editBtn").addEventListener("click", () => {
+
+  current = 0;
+  render();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+});
+
+// =====================================
+// 8. WHATSAPP
+// =====================================
+
+$("sendBtn").addEventListener("click", () => {
+
+  if(
+    !/^\d{8,15}$/.test(WHATSAPP_NUMBER) ||
+    WHATSAPP_NUMBER === "212600000000"
+  ){
+
+    alert(
+      "Bdel WHATSAPP_NUMBER f code b numéro dyalk international."
+    );
+
+    return;
+  }
+
+  const message = encodeURIComponent(makeMessage());
+
+  const url =
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+
+  window.open(url,"_blank");
+
+});
+
+// =====================================
+// 9. PETALS ANIMATION
+// =====================================
+
+const petals = $("petals");
+
+for(let i=0;i<18;i++){
+
+  const p = document.createElement("span");
+
+  p.className = "petal";
+  p.textContent = ["✦","♥","❀"][i % 3];
+
+  p.style.left = `${Math.random() * 100}%`;
+  p.style.animationDuration = `${9 + Math.random() * 13}s`;
+  p.style.animationDelay = `${-Math.random() * 18}s`;
+  p.style.fontSize = `${10 + Math.random() * 13}px`;
+
+  petals.appendChild(p);
+
+}
+
+// Lancement
+render();
+
+</script>
+
+</body>
+</html>
